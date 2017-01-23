@@ -1,4 +1,4 @@
-package hello;
+package game;
 
 /**
  * Created by vikto on 1/22/2017.

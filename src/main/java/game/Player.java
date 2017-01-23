@@ -1,6 +1,4 @@
-package hello;
-
-import java.lang.reflect.Array;
+package game;
 
 /**
  * Created by vikto on 1/22/2017.

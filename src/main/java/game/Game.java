@@ -1,12 +1,5 @@
-package hello;
+package game;
 
-
-
-import org.apache.commons.lang3.ArrayUtils;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by vikto on 1/22/2017.
