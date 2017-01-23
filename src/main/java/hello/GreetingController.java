@@ -8,28 +8,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.Date;
-import java.util.Random;
 
 @Controller
 public class GreetingController {
-    //use just one model, quick fix (consider refactor)
 
+
+    //use just one model for the index page
     @RequestMapping("/play")
-    public String greetings(@RequestParam(value="name", required=false, defaultValue="World") String name, Model model) {
-
-        model.addAttribute("name", "Viktor");
-        model.addAttribute("dataNum", "3");
+    public String greetings() {
         return "greetings";
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/makemove")
      @ResponseBody
      public String getTime(@RequestParam("position") String positionPlayed,@RequestParam("player") String playerTurn, Model model) {
-        Mancala mancala = Mancala.getInstance();
 
+        Mancala mancala = Mancala.getInstance();
         mancala.getGame().doMove(playerTurn,positionPlayed);
 
         JSONArray ja = new JSONArray();

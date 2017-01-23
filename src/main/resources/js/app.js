@@ -7,20 +7,21 @@ var playerTurn="playerOne"
 
 
 var onPitClick = function() {
+
     var pit = this.getAttribute("sequence");
-    console.log(playerTurn);
     if(this.innerHTML != "0") //pit with zero seeds
         ajaxCall(pit,playerTurn);
 
 };
 
 var playerTurnSwitch= function (playerOneAgain, playerTwoAgain) {
-    console.log(playerTurn);
+
     if(playerTurn == "playerOne" && !(playerOneAgain === 'true')){
         switchEventListener("playerTwo");
-        playerTurn="playerTwo"
+        playerTurn="playerTwo";
         switchCoursor(playerTurn);
-    }else if(playerTurn == "playerTwo" && !(playerTwoAgain === 'true')){
+    }
+    else if(playerTurn == "playerTwo" && !(playerTwoAgain === 'true')){
         switchEventListener("playerOne");
         playerTurn="playerOne";}
         switchCoursor(playerTurn);
@@ -31,23 +32,23 @@ var playerTurnSwitch= function (playerOneAgain, playerTwoAgain) {
 function ajaxCall(positionClicked, playerTurn) {
     $.post('makemove', { position: positionClicked, player : playerTurn},
         function(returnedData){
-            console.log(returnedData);
+
             returnedData = JSON.parse(returnedData);
             stores[1].innerHTML= returnedData[1];
             stores[0].innerHTML= returnedData[3];
+
             var player1 = returnedData[0];
             for (var i = 0; i < player1.length; i++) {
-                var value = player1[i];
                 player_one_pits[i].innerHTML=returnedData[0][i];
                 player_two_pits[i].innerHTML=returnedData[2][i];
-                console.log(value)
+
             }
-            console.log(returnedData[4]);
+
             var playersTurn =returnedData[4];
             playerTurnSwitch(playersTurn.player1Again,playersTurn.player2Again);
+
             var endGame =returnedData[5];
-            console.log(endGame.endGame === 'false');
-            if(endGame.endGame === 'true'){
+            if(endGame.endGame == "1"){
                 alert("Game Finished; Thank you for playing");
             }
 
