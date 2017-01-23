@@ -5,19 +5,28 @@ var player_two_pits= document.querySelectorAll('.row.player-two .pit');
 var stores= document.querySelectorAll('.store');
 var playerTurn="playerOne"
 
+
 var onPitClick = function() {
-    var attribute = this.getAttribute("sequence");
-    ajaxCall(attribute,playerTurn);
-    if(playerTurn == "playerOne"){
-        switchEventListener("playerTwo");
-        playerTurn="playerTwo"
-    }else if(playerTurn == "playerTwo"){
-        switchEventListener("playerOne");
-        playerTurn="playerOne"
-    }
+    var pit = this.getAttribute("sequence");
+    console.log(playerTurn);
+    if(this.innerHTML != "0") //pit with zero seeds
+        ajaxCall(pit,playerTurn);
 
 };
 
+var playerTurnSwitch= function (playerOneAgain, playerTwoAgain) {
+    console.log(playerTurn);
+    if(playerTurn == "playerOne" && !(playerOneAgain === 'true')){
+        switchEventListener("playerTwo");
+        playerTurn="playerTwo"
+        switchCoursor(playerTurn);
+    }else if(playerTurn == "playerTwo" && !(playerTwoAgain === 'true')){
+        switchEventListener("playerOne");
+        playerTurn="playerOne";}
+        switchCoursor(playerTurn);
+
+
+};
 
 function ajaxCall(positionClicked, playerTurn) {
     $.post('makemove', { position: positionClicked, player : playerTurn},
@@ -33,9 +42,21 @@ function ajaxCall(positionClicked, playerTurn) {
                 player_two_pits[i].innerHTML=returnedData[2][i];
                 console.log(value)
             }
+            console.log(returnedData[4]);
+            var playersTurn =returnedData[4];
+            playerTurnSwitch(playersTurn.player1Again,playersTurn.player2Again);
+            var endGame =returnedData[5];
+            console.log(endGame.endGame === 'false');
+            if(endGame.endGame === 'true'){
+                alert("Game Finished; Thank you for playing");
+            }
 
         });
 }
+
+
+
+
 function init(classname) {
     for (var i = 0; i < classname.length; i++) {
         classname[i].setAttribute("sequence", sequence_pit.toString());
@@ -44,6 +65,22 @@ function init(classname) {
     }
 
 }
+
+function switchCoursor (playerTurn){
+    for(var i =0; i<player_two_pits.length;i++){
+        if(playerTurn == "playerTwo"){
+            player_two_pits[i].style.cursor="pointer";
+            player_one_pits[i].style.cursor="cell";
+            document.querySelector('.current-player').textContent = "two";
+        }
+        else{
+            player_one_pits[i].style.cursor="pointer";
+            player_two_pits[i].style.cursor="cell";
+            document.querySelector('.current-player').textContent = "one";
+        }
+        }
+    }
+
 
 function switchEventListener(playerTurn) {
     if(playerTurn== "playerOne"){

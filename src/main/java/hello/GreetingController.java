@@ -1,6 +1,7 @@
 package hello;
 
 import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,18 +31,21 @@ public class GreetingController {
         Mancala mancala = Mancala.getInstance();
 
         mancala.getGame().doMove(playerTurn,positionPlayed);
-        System.out.print(playerTurn);
-        System.out.print(positionPlayed);
-        Random rand = new Random();
-        float r = rand.nextFloat() * 100;
-        String result = "<br>Next Random # is <b>" + r + "</b>. Generated on <b>" + new Date().toString() + "</b>";
-        System.out.println("Debug Message from CrunchifySpringAjaxJQuery Controller.." + new Date().toString());
-//        return result;
+
         JSONArray ja = new JSONArray();
         ja.add( mancala.getPlayerOne().getPits());
         ja.add( mancala.getPlayerOne().getStoreStones());
         ja.add( mancala.getPlayerTwo().getPits());
         ja.add( mancala.getPlayerTwo().getStoreStones());
+
+        JSONObject json = new JSONObject();
+        json.put("player1Again", String.valueOf(mancala.getPlayerOne().isPlayAgain()));
+        json.put("player2Again", String.valueOf(mancala.getPlayerTwo().isPlayAgain()));
+        ja.add(json);
+
+        JSONObject jsonEndGameObj = new JSONObject();
+        jsonEndGameObj.put("endGame",mancala.getGame().checkEndGame());
+        ja.add(jsonEndGameObj);
         return String.valueOf(ja);
     }
 

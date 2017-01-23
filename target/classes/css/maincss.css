@@ -36,7 +36,7 @@ h1 {
     max-width: 100%;
     resize: both;
     overflow-x: auto;
-    background: url(../images/wood.png);
+    background: url(../images/wood.jpg);
     border-radius: 20px;
 
 &, p {
